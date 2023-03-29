@@ -44,4 +44,58 @@ defmodule TempleLiveviewWeb.CommentLive.Index do
 
     {:noreply, stream_delete(socket, :comments, comment)}
   end
+
+  @impl true
+  def render(assigns) do
+    ~H"""
+    <.header>
+      Listing Comments
+      <:actions>
+        <.link patch={~p"/comments/new"}>
+          <.button>New Comment</.button>
+        </.link>
+      </:actions>
+    </.header>
+
+    <.table
+      id="comments"
+      rows={@streams.comments}
+      row_click={fn {_id, comment} -> JS.navigate(~p"/comments/#{comment}") end}
+    >
+      <:col :let={{_id, comment}} label="Votes count"><%= comment.votes_count %></:col>
+      <:col :let={{_id, comment}} label="Body"><%= comment.body %></:col>
+      <:action :let={{_id, comment}}>
+        <div class="sr-only">
+          <.link navigate={~p"/comments/#{comment}"}>Show</.link>
+        </div>
+        <.link patch={~p"/comments/#{comment}/edit"}>Edit</.link>
+      </:action>
+      <:action :let={{id, comment}}>
+        <.link
+          phx-click={JS.push("delete", value: %{id: comment.id}) |> hide("##{id}")}
+          data-confirm="Are you sure?"
+        >
+          Delete
+        </.link>
+      </:action>
+    </.table>
+
+    <.modal
+      :if={@live_action in [:new, :edit]}
+      id="comment-modal"
+      show
+      on_cancel={JS.patch(~p"/comments")}
+    >
+      <.live_component
+        module={TempleLiveviewWeb.CommentLive.FormComponent}
+        id={@comment.id || :new}
+        title={@page_title}
+        action={@live_action}
+        comment={@comment}
+        patch={~p"/comments"}
+      />
+    </.modal>
+    """
+  end
+
 end

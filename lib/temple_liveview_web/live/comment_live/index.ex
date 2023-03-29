@@ -98,4 +98,15 @@ defmodule TempleLiveviewWeb.CommentLive.Index do
     """
   end
 
+  # This fails
+  def temple_component(assigns) do
+    temple do
+      div class: "border-2 border-emerald-500 rounded m-2 p-2" do
+        slot @inner_block
+
+        ul class: "list-disc pl-6" do
+        end
+      end
+    end
+  end
 end

@@ -49,7 +49,9 @@ defmodule TempleLiveviewWeb.CommentLive.Index do
   def render(assigns) do
     ~H"""
     <.header>
-      Listing Comments
+      <.title>
+        Listing Comments
+      </.title>
       <:actions>
         <.link patch={~p"/comments/new"}>
           <.button>New Comment</.button>
@@ -98,14 +100,11 @@ defmodule TempleLiveviewWeb.CommentLive.Index do
     """
   end
 
-  # This fails
-  def temple_component(assigns) do
+  def title(assigns) do
     temple do
       div class: "border-2 border-emerald-500 rounded m-2 p-2" do
+        div do: "🤫 i'm inside the temple"
         slot @inner_block
-
-        ul class: "list-disc pl-6" do
-        end
       end
     end
   end

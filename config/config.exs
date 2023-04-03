@@ -29,6 +29,9 @@ config :temple_liveview, TempleLiveviewWeb.Endpoint,
 # at the `config/runtime.exs`.
 config :temple_liveview, TempleLiveview.Mailer, adapter: Swoosh.Adapters.Local
 
+config :temple,
+  engine: Phoenix.LiveView.Engine
+
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.14.41",
